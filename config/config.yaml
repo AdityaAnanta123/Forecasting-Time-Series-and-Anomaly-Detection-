@@ -1,0 +1,55 @@
+project:
+  name: "Financial Time Series Forecasting + Anomaly Detection"
+  version: "1.0"
+  author: "Aditya Ananta"
+  timezone: "Asia/Jakarta"
+
+paths:
+  raw_data : "data/raw/"
+  processed_data: "data/processed/"
+  model_checkpoints: "models_checkpoints/"
+  logs: "logs/"
+
+database:
+  type: "postgresql"
+  host: "db"
+  port: 5332
+  user: "forecast_user"
+  password: "forecast_password"
+  db_name: "forecast_db"
+  schema: "public"
+
+data_source:
+  use_api: true
+  api_provider: "yahoo_finance"
+  symbols: ["AAPL", "MSFT", "GOOG"]
+  update_frecuency: "daily"
+
+model:
+  Forecasting:
+    type: "lstm"
+    lookback: 30
+    epochs: 50
+    batch_size: 32
+    learning_rate: 0.001
+  anomaly:
+    type: "isolation_forest"
+    contamination: 0.05
+
+evaluation:
+  metrics: ["rmse","mape"]
+  validation_split: 0.2
+
+api:
+  host: 0.0.0.0
+  port: 0000
+  reload: true
+
+logging:
+  level: "INFO"
+  log_to_file: true
+
+data:
+  ticker: "AAPL"
+  start_date: "2020-01-01"
+  end_date: "2025-01-01"
